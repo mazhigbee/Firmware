@@ -895,9 +895,6 @@ MS5611::print_info()
 	printf("TEMP:           %d\n", _TEMP);
 	printf("SENS:           %lld\n", _SENS);
 	printf("OFF:            %lld\n", _OFF);
-	printf("P:              %.3f\n", (double)_P);
-	printf("T:              %.3f\n", (double)_T);
-	printf("MSL pressure:   %10.4f\n", (double)(_msl_pressure / 100.f));
 
 	printf("factory_setup             %u\n", _prom.factory_setup);
 	printf("c1_pressure_sens          %u\n", _prom.c1_pressure_sens);
@@ -907,6 +904,10 @@ MS5611::print_info()
 	printf("c5_reference_temp         %u\n", _prom.c5_reference_temp);
 	printf("c6_temp_coeff_temp        %u\n", _prom.c6_temp_coeff_temp);
 	printf("serial_and_crc            %u\n", _prom.serial_and_crc);
+
+	sensor_baro_s brp = {};
+	_reports->get(&brp);
+	print_message(brp);
 }
 
 /**
@@ -1119,10 +1120,7 @@ test(enum MS5611_BUS busid)
 	}
 
 	warnx("single read");
-	warnx("pressure:    %10.4f", (double)report.pressure);
-	warnx("altitude:    %11.4f", (double)report.altitude);
-	warnx("temperature: %8.4f", (double)report.temperature);
-	warnx("time:        %lld", report.timestamp);
+	print_message(report);
 
 	/* set the queue depth to 10 */
 	if (OK != ioctl(fd, SENSORIOCSQUEUEDEPTH, 10)) {
@@ -1155,10 +1153,7 @@ test(enum MS5611_BUS busid)
 		}
 
 		warnx("periodic read %u", i);
-		warnx("pressure:    %10.4f", (double)report.pressure);
-		warnx("altitude:    %11.4f", (double)report.altitude);
-		warnx("temperature: %8.4f", (double)report.temperature);
-		warnx("time:        %lld", report.timestamp);
+		print_message(report);
 	}
 
 	close(fd);

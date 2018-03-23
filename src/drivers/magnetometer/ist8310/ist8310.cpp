@@ -1253,12 +1253,7 @@ IST8310::print_info()
 	perf_print_counter(_sample_perf);
 	perf_print_counter(_comms_errors);
 	printf("poll interval:  %u ticks\n", _measure_ticks);
-	printf("output  (%.2f %.2f %.2f)\n", (double)_last_report.x, (double)_last_report.y, (double)_last_report.z);
-	printf("offsets (%.2f %.2f %.2f)\n", (double)_scale.x_offset, (double)_scale.y_offset, (double)_scale.z_offset);
-	printf("scaling (%.2f %.2f %.2f) 1/range_scale %.2f\n",
-	       (double)_scale.x_scale, (double)_scale.y_scale, (double)_scale.z_scale,
-	       (double)(1.0f / _range_scale));
-	printf("temperature %.2f\n", (double)_last_report.temperature);
+	print_message(_last_report);
 	_reports->print_info("report queue");
 }
 

@@ -799,9 +799,7 @@ LPS25H::print_info()
 	perf_print_counter(_sample_perf);
 	perf_print_counter(_comms_errors);
 	printf("poll interval:  %u ticks\n", _measure_ticks);
-	printf("pressure    %.2f\n", (double)_last_report.pressure);
-	printf("altitude:    %.2f\n", (double)_last_report.altitude);
-	printf("temperature %.2f\n", (double)_last_report.temperature);
+	print_message(_last_report);
 
 	_reports->print_info("report queue");
 }
